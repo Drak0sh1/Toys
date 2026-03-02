@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#6200EE</color>
+    <color name="primary_dark">#3700B3</color>
+    <color name="accent">#03DAC5</color>
+    <color name="white">#FFFFFF</color>
+    <!-- Добавьте эту строку -->
+    <color name="black">#FF000000</color>
+    <color name="delete_color">#F44336</color>
+
+    <!-- Статусы заказов -->
+    <color name="status_pending">#FFA500</color>
+    <color name="status_processing">#2196F3</color>
+    <color name="status_shipped">#4CAF50</color>
+    <color name="status_delivered">#4CAF50</color>
+    <color name="status_cancelled">#F44336</color>
+    <color name="status_default">#9E9E9E</color>
+</resources>

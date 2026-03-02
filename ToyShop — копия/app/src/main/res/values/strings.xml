@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">ToyShop</string>
+
+    <string-array name="categories_array">
+        <item>Конструкторы</item>
+        <item>Мягкие игрушки</item>
+        <item>Машинки</item>
+        <item>Куклы</item>
+        <item>Развивающие</item>
+        <item>Настольные игры</item>
+        <item>Другое</item>
+    </string-array>
+
+    <string-array name="age_groups_array">
+        <item>0+</item>
+        <item>1+</item>
+        <item>2+</item>
+        <item>3+</item>
+        <item>4+</item>
+        <item>5+</item>
+        <item>6+</item>
+        <item>7+</item>
+        <item>8+</item>
+        <item>9+</item>
+        <item>10+</item>
+        <item>12+</item>
+        <item>14+</item>
+        <item>16+</item>
+        <item>18+</item>
+    </string-array>
+</resources>

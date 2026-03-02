@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "694785570597",
+    "project_id": "toyshop-a3f89",
+    "storage_bucket": "toyshop-a3f89.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694785570597:android:e47685cb33b870d4bb0ccc",
+        "android_client_info": {
+          "package_name": "com.example.toyshop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8R41spUPcMyaOkodfs05kZZCrp1Gam1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
