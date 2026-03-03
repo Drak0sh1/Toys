@@ -73,17 +73,21 @@ public class CartManager {
     }
 
     public void updateQuantity(String toyId, int quantity) {
+        CartItem toRemove = null;
         for (CartItem item : cartItems) {
             if (item.getToyId().equals(toyId)) {
                 if (quantity <= 0) {
-                    cartItems.remove(item);
+                    toRemove = item;
                 } else {
                     item.setQuantity(quantity);
                 }
-                saveCart();
-                return;
+                break;
             }
         }
+        if (toRemove != null) {
+            cartItems.remove(toRemove);
+        }
+        saveCart();
     }
 
     public List<CartItem> getCartItems() {

@@ -32,6 +32,7 @@ public class AdminMainActivity extends AppCompatActivity {
     private TextView tvEmptyView;
     private FloatingActionButton fabAddToy;
     private String userId;
+    private String userRole;
 
     private DatabaseManager databaseManager;
 
@@ -41,10 +42,11 @@ public class AdminMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_main);
 
         userId = getIntent().getStringExtra("user_id");
-        if (userId == null) {
-            // Если userId не передан, пробуем получить из SharedPreferences
+        userRole = getIntent().getStringExtra("user_role");
+        if (userId == null || userRole == null) {
             SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
-            userId = prefs.getString("user_id", null);
+            if (userId == null) userId = prefs.getString("user_id", null);
+            if (userRole == null) userRole = prefs.getString("user_role", "admin");
         }
 
         databaseManager = DatabaseManager.getInstance(this);
@@ -86,6 +88,7 @@ public class AdminMainActivity extends AppCompatActivity {
                 Intent intent = new Intent(AdminMainActivity.this, ToyDetailActivity.class);
                 intent.putExtra("toy_id", toy.getToyId());
                 intent.putExtra("user_id", userId);
+                intent.putExtra("user_role", userRole);
                 startActivity(intent);
             }
 

@@ -115,11 +115,14 @@ public class AdminOrdersActivity extends AppCompatActivity {
                 .format(new java.util.Date(order.getOrderDate()))).append("\n\n");
         details.append("Товары:\n");
 
-        for (com.example.toyshop.models.CartItem item : order.getItems()) {
-            details.append("• ").append(item.getToyName())
+        List<com.example.toyshop.models.CartItem> items = order.getItems();
+        if (items != null) {
+            for (com.example.toyshop.models.CartItem item : items) {
+                details.append("• ").append(item.getToyName())
                     .append(" x").append(item.getQuantity())
                     .append(" - ").append(String.format("%.2f ₽", item.getTotalPrice()))
                     .append("\n");
+            }
         }
 
         details.append("\nИтого: ").append(String.format("%.2f ₽", order.getTotalAmount())).append("\n\n");

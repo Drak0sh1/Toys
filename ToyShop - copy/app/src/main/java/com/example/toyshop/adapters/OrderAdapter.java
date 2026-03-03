@@ -63,7 +63,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.tvOrderStatus.setText(getStatusText(order.getStatus()));
         holder.tvOrderStatus.setBackgroundColor(getStatusColor(order.getStatus()));
 
-        holder.tvOrderItems.setText("Товаров: " + order.getItems().size());
+        int itemsCount = order.getItems() != null ? order.getItems().size() : 0;
+        holder.tvOrderItems.setText("Товаров: " + itemsCount);
 
         if (isAdminMode) {
             holder.btnUpdateStatus.setVisibility(View.VISIBLE);

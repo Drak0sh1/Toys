@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.toyshop.R;
 import com.example.toyshop.adapters.OrderAdapter;
 import com.example.toyshop.database.DatabaseManager;
+import com.example.toyshop.models.CartItem;
 import com.example.toyshop.models.Order;
 
 import java.util.ArrayList;
@@ -116,11 +117,14 @@ public class UserOrdersActivity extends AppCompatActivity {
                 .format(new java.util.Date(order.getOrderDate()))).append("\n\n");
         details.append("Товары:\n");
 
-        for (com.example.toyshop.models.CartItem item : order.getItems()) {
+        List<CartItem> items = order.getItems();
+        if (items != null) {
+        for (CartItem item : items) {
             details.append("• ").append(item.getToyName())
                     .append(" x").append(item.getQuantity())
                     .append(" - ").append(String.format("%.2f ₽", item.getTotalPrice()))
                     .append("\n");
+        }
         }
 
         details.append("\nИтого: ").append(String.format("%.2f ₽", order.getTotalAmount())).append("\n\n");

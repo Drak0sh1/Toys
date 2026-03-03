@@ -112,6 +112,15 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void placeOrder() {
+        if (userId == null) {
+            Toast.makeText(this, "Ошибка: пользователь не определен", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (cartManager.isEmpty()) {
+            Toast.makeText(this, "Корзина пуста", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String address = etAddress.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
         String comment = etComment.getText().toString().trim();

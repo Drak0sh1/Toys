@@ -36,6 +36,7 @@ public class UserMainActivity extends AppCompatActivity {
     private TextView tvCartBadge;
     private FloatingActionButton fabCart;
     private String userId;
+    private String userRole;
 
     private DatabaseManager databaseManager;
     private CartManager cartManager;
@@ -46,6 +47,8 @@ public class UserMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_main);
 
         userId = getIntent().getStringExtra("user_id");
+        userRole = getIntent().getStringExtra("user_role");
+        if (userRole == null) userRole = "user";
 
         databaseManager = DatabaseManager.getInstance(this);
         cartManager = CartManager.getInstance(this);
@@ -90,6 +93,7 @@ public class UserMainActivity extends AppCompatActivity {
                 Intent intent = new Intent(UserMainActivity.this, ToyDetailActivity.class);
                 intent.putExtra("toy_id", toy.getToyId());
                 intent.putExtra("user_id", userId);
+                intent.putExtra("user_role", userRole);
                 startActivity(intent);
             }
 

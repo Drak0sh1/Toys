@@ -1,6 +1,7 @@
 package com.example.toyshop.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -90,6 +91,13 @@ public class LoginActivity extends AppCompatActivity {
                         btnLogin.setEnabled(true);
 
                         if (user != null) {
+                            // Сохраняем сессию для автологина
+                            SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+                            prefs.edit()
+                                    .putString("user_id", user.getUserId())
+                                    .putString("user_role", user.getRole())
+                                    .apply();
+
                             Intent intent;
                             if ("admin".equals(user.getRole())) {
                                 intent = new Intent(LoginActivity.this, AdminMainActivity.class);
@@ -97,7 +105,6 @@ public class LoginActivity extends AppCompatActivity {
                                 intent = new Intent(LoginActivity.this, UserMainActivity.class);
                             }
 
-                            // Передаем информацию о пользователе
                             intent.putExtra("user_id", user.getUserId());
                             intent.putExtra("user_role", user.getRole());
                             intent.putExtra("user_name", user.getFullName());

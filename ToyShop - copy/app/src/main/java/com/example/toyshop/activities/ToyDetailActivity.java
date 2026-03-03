@@ -45,6 +45,7 @@ public class ToyDetailActivity extends AppCompatActivity {
         toyId = getIntent().getStringExtra("toy_id");
         userId = getIntent().getStringExtra("user_id");
         userRole = getIntent().getStringExtra("user_role");
+        if (userRole == null) userRole = "user";
 
         databaseManager = DatabaseManager.getInstance(this);
         cartManager = CartManager.getInstance(this);
@@ -115,6 +116,8 @@ public class ToyDetailActivity extends AppCompatActivity {
         tvToyCategory.setText("Категория: " + currentToy.getCategory());
         tvToyAgeGroup.setText("Для детей " + currentToy.getAgeGroup() + "+");
         tvToyDescription.setText(currentToy.getDescription());
+
+        tvQuantity.setText(String.valueOf(quantity));
 
         if (currentToy.isAvailable()) {
             tvStockStatus.setText("В наличии: " + currentToy.getStockQuantity() + " шт.");

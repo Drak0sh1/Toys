@@ -141,7 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addToy(db, new Toy("1", "Конструктор LEGO City", "Большой конструктор для города", 2999.99, "Конструкторы", 6, 15));
         addToy(db, new Toy("2", "Мягкая игрушка Мишка", "Пушистый мишка 30 см", 1299.50, "Мягкие игрушки", 3, 25));
         addToy(db, new Toy("3", "Машинка радиоуправляемая", "Скоростная машинка", 3499.00, "Машинки", 5, 8));
-        addToy(db, new Toy("4", "Набор доктора", "Игровой набор с инструментами", 899.99, "Ролевые игры", 4, 12));
+        addToy(db, new Toy("4", "Набор доктора", "Игровой набор с инструментами", 899.99, "Развивающие", 4, 12));
         addToy(db, new Toy("5", "Кукла Барби", "Кукла с аксессуарами", 2499.00, "Куклы", 5, 10));
         addToy(db, new Toy("6", "Развивающая доска", "Бизиборд для малышей", 1999.00, "Развивающие", 2, 7));
     }
@@ -516,7 +516,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 order.setUserId(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ORDER_USER_ID)));
 
                 String itemsJson = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ITEMS_JSON));
-                List<CartItem> items = gson.fromJson(itemsJson, type);
+                List<CartItem> items = (itemsJson == null || itemsJson.equals("null")) 
+                        ? new ArrayList<>() : gson.fromJson(itemsJson, type);
+                if (items == null) items = new ArrayList<>();
                 order.setItems(items);
 
                 order.setTotalAmount(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_TOTAL_AMOUNT)));

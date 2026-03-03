@@ -37,6 +37,7 @@
         <activity android:name=".activities.CategoriesActivity" />
         <activity android:name=".activities.AdminUsersActivity" />
         <activity android:name=".activities.CheckoutActivity" />
+        <activity android:name=".activities.CategoryToysActivity" />
 
     </application>
 
