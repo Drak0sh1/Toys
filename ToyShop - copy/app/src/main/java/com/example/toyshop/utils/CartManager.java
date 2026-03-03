@@ -58,10 +58,20 @@ public class CartManager {
     public void addItem(CartItem item) {
         for (CartItem existingItem : cartItems) {
             if (existingItem.getToyId().equals(item.getToyId())) {
-                existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
+                int newQty = existingItem.getQuantity() + item.getQuantity();
+                if (item.getStockQuantity() > 0) {
+                    existingItem.setStockQuantity(item.getStockQuantity());
+                    newQty = Math.min(newQty, item.getStockQuantity());
+                }
+                existingItem.setQuantity(newQty);
                 saveCart();
                 return;
             }
+        }
+        int qty = item.getQuantity();
+        if (item.getStockQuantity() > 0) {
+            qty = Math.min(qty, item.getStockQuantity());
+            item.setQuantity(qty);
         }
         cartItems.add(item);
         saveCart();
@@ -79,7 +89,9 @@ public class CartManager {
                 if (quantity <= 0) {
                     toRemove = item;
                 } else {
-                    item.setQuantity(quantity);
+                    int maxQty = item.getStockQuantity();
+                    int actualQty = (maxQty > 0) ? Math.min(quantity, maxQty) : quantity;
+                    item.setQuantity(actualQty);
                 }
                 break;
             }
@@ -88,6 +100,17 @@ public class CartManager {
             cartItems.remove(toRemove);
         }
         saveCart();
+    }
+
+    /** Проверяет, можно ли увеличить количество (для отображения в UI) */
+    public boolean canIncreaseQuantity(String toyId) {
+        for (CartItem item : cartItems) {
+            if (item.getToyId().equals(toyId)) {
+                if (item.getStockQuantity() <= 0) return true;
+                return item.getQuantity() < item.getStockQuantity();
+            }
+        }
+        return false;
     }
 
     public List<CartItem> getCartItems() {

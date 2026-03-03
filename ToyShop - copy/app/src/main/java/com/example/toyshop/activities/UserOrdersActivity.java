@@ -50,16 +50,14 @@ public class UserOrdersActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Мои заказы");
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setTitle("Мои заказы");
             }
-        });
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
     }
 
     private void setupRecyclerView() {
@@ -83,6 +81,11 @@ public class UserOrdersActivity extends AppCompatActivity {
     }
 
     private void loadOrders() {
+        if (userId == null) {
+            tvEmptyView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -109,9 +112,10 @@ public class UserOrdersActivity extends AppCompatActivity {
     }
 
     private void showOrderDetails(Order order) {
-        // Создаем диалог с деталями заказа
+        if (order == null || order.getOrderId() == null) return;
+        String orderIdShort = order.getOrderId().length() >= 8 ? order.getOrderId().substring(0, 8) : order.getOrderId();
         StringBuilder details = new StringBuilder();
-        details.append("Заказ #").append(order.getOrderId().substring(0, 8)).append("\n\n");
+        details.append("Заказ #").append(orderIdShort).append("\n\n");
         details.append("Статус: ").append(getStatusText(order.getStatus())).append("\n");
         details.append("Дата: ").append(new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm")
                 .format(new java.util.Date(order.getOrderDate()))).append("\n\n");
@@ -128,8 +132,8 @@ public class UserOrdersActivity extends AppCompatActivity {
         }
 
         details.append("\nИтого: ").append(String.format("%.2f ₽", order.getTotalAmount())).append("\n\n");
-        details.append("Адрес доставки: ").append(order.getShippingAddress()).append("\n");
-        details.append("Способ оплаты: ").append(order.getPaymentMethod());
+        details.append("Адрес доставки: ").append(order.getShippingAddress() != null ? order.getShippingAddress() : "-").append("\n");
+        details.append("Способ оплаты: ").append(order.getPaymentMethod() != null ? order.getPaymentMethod() : "-");
 
         new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Детали заказа")

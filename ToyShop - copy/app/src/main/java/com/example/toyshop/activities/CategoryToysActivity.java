@@ -101,12 +101,17 @@ public class CategoryToysActivity extends AppCompatActivity {
 
             @Override
             public void onAddToCartClick(Toy toy) {
+                if (!toy.isAvailable() || toy.getStockQuantity() <= 0) {
+                    Toast.makeText(CategoryToysActivity.this, "Товар недоступен", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 CartItem item = new CartItem(
                         toy.getToyId(),
                         toy.getName(),
                         toy.getPrice(),
                         1,
-                        toy.getImageUrl()
+                        toy.getImageUrl(),
+                        toy.getStockQuantity()
                 );
                 cartManager.addItem(item);
                 Toast.makeText(CategoryToysActivity.this, "Товар добавлен в корзину", Toast.LENGTH_SHORT).show();

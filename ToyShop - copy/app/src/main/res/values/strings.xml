@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">ToyShop</string>
+    <!-- Пароль для добавления товаров в админке (выдаётся администратору) -->
+    <string name="admin_add_password" translatable="false">add_toy_2024</string>
 
     <string-array name="categories_array">
         <item>Конструкторы</item>

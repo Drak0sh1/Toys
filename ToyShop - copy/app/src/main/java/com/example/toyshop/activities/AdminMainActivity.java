@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -65,11 +66,34 @@ public class AdminMainActivity extends AppCompatActivity {
         fabAddToy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminMainActivity.this, AddEditToyActivity.class);
-                intent.putExtra("user_id", userId);
-                startActivity(intent);
+                showAddProductPasswordDialog();
             }
         });
+    }
+
+    private void showAddProductPasswordDialog() {
+        android.widget.EditText passwordInput = new android.widget.EditText(this);
+        passwordInput.setHint("Пароль для добавления");
+        passwordInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        passwordInput.setPadding(50, 40, 50, 40);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Добавление товара")
+                .setMessage("Введите пароль для добавления товаров:")
+                .setView(passwordInput)
+                .setPositiveButton("Войти", (dialog, which) -> {
+                    String password = passwordInput.getText().toString().trim();
+                    String correctPassword = getString(R.string.admin_add_password);
+                    if (password.equals(correctPassword)) {
+                        Intent intent = new Intent(AdminMainActivity.this, AddEditToyActivity.class);
+                        intent.putExtra("user_id", userId);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(AdminMainActivity.this, "Неверный пароль", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Отмена", null)
+                .show();
     }
 
     private void setupToolbar() {

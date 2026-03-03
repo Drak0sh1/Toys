@@ -63,16 +63,14 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Оформление заказа");
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setTitle("Оформление заказа");
             }
-        });
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
     }
 
     private void setupPaymentSpinner() {
@@ -141,6 +139,23 @@ public class CheckoutActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                // Проверяем наличие товаров на складе
+                com.example.toyshop.models.Toy toy;
+                for (CartItem cartItem : cartManager.getCartItems()) {
+                    toy = databaseManager.getDatabaseHelper().getToyById(cartItem.getToyId());
+                    if (toy == null || cartItem.getQuantity() > toy.getStockQuantity()) {
+                        final String msg = toy == null ? "Товар «" + cartItem.getToyName() + "» не найден" :
+                                "«" + cartItem.getToyName() + "» — на складе " + toy.getStockQuantity() + " шт.";
+                        runOnUiThread(() -> {
+                            btnPlaceOrder.setEnabled(true);
+                            Toast.makeText(CheckoutActivity.this,
+                                    "Недостаточно товара на складе: " + msg,
+                                    Toast.LENGTH_LONG).show();
+                        });
+                        return;
+                    }
+                }
+
                 // Создаем заказ
                 Order order = new Order();
                 order.setOrderId(UUID.randomUUID().toString());

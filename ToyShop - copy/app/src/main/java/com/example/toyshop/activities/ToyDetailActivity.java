@@ -203,7 +203,8 @@ public class ToyDetailActivity extends AppCompatActivity {
                 currentToy.getName(),
                 currentToy.getPrice(),
                 quantity,
-                currentToy.getImageUrl()
+                currentToy.getImageUrl(),
+                currentToy.getStockQuantity()
         );
 
         cartManager.addItem(item);

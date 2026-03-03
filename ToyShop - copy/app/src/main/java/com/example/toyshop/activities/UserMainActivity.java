@@ -152,12 +152,17 @@ public class UserMainActivity extends AppCompatActivity {
     }
 
     private void addToCart(Toy toy) {
+        if (!toy.isAvailable() || toy.getStockQuantity() <= 0) {
+            Toast.makeText(this, "Товар недоступен", Toast.LENGTH_SHORT).show();
+            return;
+        }
         CartItem item = new CartItem(
                 toy.getToyId(),
                 toy.getName(),
                 toy.getPrice(),
                 1,
-                toy.getImageUrl()
+                toy.getImageUrl(),
+                toy.getStockQuantity()
         );
 
         cartManager.addItem(item);

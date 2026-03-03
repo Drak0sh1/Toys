@@ -73,6 +73,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             holder.ivToyImage.setImageResource(R.drawable.placeholder_toy);
         }
 
+        boolean atMaxStock = item.getStockQuantity() > 0 && item.getQuantity() >= item.getStockQuantity();
+        holder.btnIncrease.setEnabled(!atMaxStock);
+
         holder.btnIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

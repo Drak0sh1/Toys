@@ -6,16 +6,23 @@ public class CartItem {
     private double price;
     private int quantity;
     private String imageUrl;
+    /** Максимальное количество на складе (0 = не ограничено, для обратной совместимости) */
+    private int stockQuantity;
 
     public CartItem() {
     }
 
     public CartItem(String toyId, String toyName, double price, int quantity, String imageUrl) {
+        this(toyId, toyName, price, quantity, imageUrl, 0);
+    }
+
+    public CartItem(String toyId, String toyName, double price, int quantity, String imageUrl, int stockQuantity) {
         this.toyId = toyId;
         this.toyName = toyName;
         this.price = price;
         this.quantity = quantity;
         this.imageUrl = imageUrl;
+        this.stockQuantity = stockQuantity;
     }
 
     // Геттеры и сеттеры
@@ -33,6 +40,9 @@ public class CartItem {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public int getStockQuantity() { return stockQuantity; }
+    public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
 
     public double getTotalPrice() {
         return price * quantity;
