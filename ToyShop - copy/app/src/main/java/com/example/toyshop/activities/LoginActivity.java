@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
+        if (etEmail == null || etPassword == null) return;
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
@@ -82,35 +83,49 @@ public class LoginActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                User user = databaseManager.getDatabaseHelper().loginUser(email, password);
+                User user = null;
+                try {
+                    user = databaseManager.getDatabaseHelper().loginUser(email, password);
+                } catch (Exception e) {
+                    android.util.Log.e("LoginActivity", "Login error", e);
+                }
 
+                final User finalUser = user;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (isFinishing() || isDestroyed()) return;
+
                         progressBar.setVisibility(View.GONE);
                         btnLogin.setEnabled(true);
 
-                        if (user != null) {
-                            // Сохраняем сессию для автологина
-                            SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
-                            prefs.edit()
-                                    .putString("user_id", user.getUserId())
-                                    .putString("user_role", user.getRole())
-                                    .apply();
+                        if (finalUser != null) {
+                            try {
+                                SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+                                String role = finalUser.getRole() != null ? finalUser.getRole() : "user";
+                                prefs.edit()
+                                        .putString("user_id", finalUser.getUserId())
+                                        .putString("user_role", role)
+                                        .apply();
 
-                            Intent intent;
-                            if ("admin".equals(user.getRole())) {
-                                intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                            } else {
-                                intent = new Intent(LoginActivity.this, UserMainActivity.class);
+                                Intent intent;
+                                if ("admin".equals(role)) {
+                                    intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                                } else {
+                                    intent = new Intent(LoginActivity.this, UserMainActivity.class);
+                                }
+
+                                intent.putExtra("user_id", finalUser.getUserId());
+                                intent.putExtra("user_role", role);
+
+                                startActivity(intent);
+                                finish();
+                            } catch (Exception e) {
+                                android.util.Log.e("LoginActivity", "Start activity error", e);
+                                Toast.makeText(LoginActivity.this,
+                                        "Ошибка входа: " + e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
                             }
-
-                            intent.putExtra("user_id", user.getUserId());
-                            intent.putExtra("user_role", user.getRole());
-                            intent.putExtra("user_name", user.getFullName());
-
-                            startActivity(intent);
-                            finish();
                         } else {
                             Toast.makeText(LoginActivity.this,
                                     "Неверный email или пароль",

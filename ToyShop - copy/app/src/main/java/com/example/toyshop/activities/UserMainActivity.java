@@ -50,8 +50,15 @@ public class UserMainActivity extends AppCompatActivity {
         userRole = getIntent().getStringExtra("user_role");
         if (userRole == null) userRole = "user";
 
-        databaseManager = DatabaseManager.getInstance(this);
-        cartManager = CartManager.getInstance(this);
+        try {
+            databaseManager = DatabaseManager.getInstance(this);
+            cartManager = CartManager.getInstance(this);
+        } catch (Exception e) {
+            android.util.Log.e("UserMainActivity", "Init error", e);
+            Toast.makeText(this, "Ошибка инициализации", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         initViews();
         setupToolbar();
@@ -67,6 +74,12 @@ public class UserMainActivity extends AppCompatActivity {
         fabCart = findViewById(R.id.fabCart);
         tvCartBadge = findViewById(R.id.tvCartBadge);
 
+        if (fabCart == null || recyclerView == null || bottomNavigation == null || tvCartBadge == null) {
+            Toast.makeText(this, "Ошибка загрузки интерфейса", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         fabCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,8 +92,12 @@ public class UserMainActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Магазин игрушек");
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle("Магазин игрушек");
+            }
+        }
     }
 
     private void setupRecyclerView() {
@@ -150,6 +167,7 @@ public class UserMainActivity extends AppCompatActivity {
     }
 
     private void updateCartBadge() {
+        if (tvCartBadge == null || cartManager == null) return;
         int count = cartManager.getItemCount();
         if (count > 0) {
             tvCartBadge.setVisibility(View.VISIBLE);
