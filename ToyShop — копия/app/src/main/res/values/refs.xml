@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <drawable name="ic_category_doll">ic_category_dolls</drawable>
+    <item name="ic_category_doll" type="drawable">@drawable/ic_category_princess</item>
 </resources>

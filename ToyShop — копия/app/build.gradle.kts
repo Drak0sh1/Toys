@@ -24,11 +24,9 @@ android {
         }
     }
 
-    // Добавьте это для исключения проблемных ресурсов
     packagingOptions {
         resources {
             excludes += "META-INF/**"
-            excludes += "**/values.xml"
         }
     }
 }
